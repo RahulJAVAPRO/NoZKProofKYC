@@ -4,14 +4,88 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Main KYC Page</title>
+    <style>
+        /* Background styling */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* Card container */
+        .container {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            max-width: 400px;
+            width: 100%;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .container:hover {
+            transform: scale(1.02);
+        }
+
+        /* Heading */
+        h1 {
+            color: #fff;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        /* Paragraph styling */
+        p {
+            color: #fff;
+            font-size: 18px;
+        }
+
+        /* List styling */
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            margin: 10px 0;
+        }
+
+        /* Links styling */
+        a {
+            display: block;
+            background: #ffcc00;
+            color: #333;
+            text-decoration: none;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: background 0.3s, transform 0.2s;
+            box-shadow: 0 4px 10px rgba(255, 204, 0, 0.4);
+        }
+
+        a:hover {
+            background: #ffdd44;
+            transform: scale(1.05);
+        }
+    </style>
 </head>
 <body>
-    <h1>KYC Management</h1>
-    <p>Select an action:</p>
-    <ul>
-        <li><a href="checkKYC.html">Check KYC Status</a></li>
-        <li><a href="deleteKYC.html">Delete KYC</a></li>
-        <li><a href="requestKYC.html">Request KYC</a></li>
-    </ul>
+    <div class="container">
+        <h1>KYC Management</h1>
+        <p>Select an action:</p>
+        <ul>
+            <li><a href="checkKYC.html">Check KYC Status</a></li>
+            <li><a href="deleteKYC.html">Delete KYC</a></li>
+            <li><a href="requestKYC.html">Request KYC</a></li>
+        </ul>
+    </div>
 </body>
 </html>

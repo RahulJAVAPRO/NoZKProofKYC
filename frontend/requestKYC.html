@@ -5,11 +5,99 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Request KYC</title>
   <script src="https://cdn.jsdelivr.net/npm/web3@1.6.1/dist/web3.min.js"></script>
+  <style>
+    /* Background styling */
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        padding: 20px;
+    }
+
+    /* Card container */
+    .container {
+        background: rgba(255, 255, 255, 0.2);
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(10px);
+        max-width: 400px;
+        width: 100%;
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .container:hover {
+        transform: scale(1.02);
+    }
+
+    /* Heading */
+    h1 {
+        color: #fff;
+        font-size: 24px;
+        margin-bottom: 15px;
+    }
+
+    /* Label styling */
+    label {
+        font-size: 16px;
+        color: #fff;
+    }
+
+    /* Input field */
+    input {
+        width: 100%;
+        padding: 10px;
+        margin-top: 8px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        outline: none;
+        text-align: center;
+        box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Button styling */
+    button {
+        background: #ffcc00;
+        color: #333;
+        border: none;
+        padding: 12px 20px;
+        font-size: 16px;
+        border-radius: 8px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 15px;
+        transition: background 0.3s, transform 0.2s;
+        width: 100%;
+        box-shadow: 0 4px 10px rgba(255, 204, 0, 0.4);
+    }
+
+    button:hover {
+        background: #ffdd44;
+        transform: scale(1.05);
+    }
+
+    /* Status message */
+    #userInfo {
+        font-size: 16px;
+        font-weight: bold;
+        color: #fff;
+        margin-top: 15px;
+    }
+
+  </style>
 </head>
 <body>
-  <h1>Request KYC</h1>
-
+    
+  
+<div class="container">
   <form id="kycForm">
+    <h1>Request KYC</h1>
     <label for="name">Name:</label><br>
     <input type="text" id="name" required><br><br>
 
@@ -21,7 +109,7 @@
 
     <button type="submit">Request KYC</button>
   </form>
-
+</div>
   <script>
     const contractAddress = '0x4b03A3b8c9886b875b671007Fb5238ea3Ef995ca';
     const abi = [

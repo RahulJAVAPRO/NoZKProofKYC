@@ -5,8 +5,104 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Check KYC Status</title>
   <script src="https://cdn.jsdelivr.net/npm/web3@1.6.1/dist/web3.min.js"></script>
+  <style>
+    /* Background styling */
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        padding: 20px;
+    }
+
+    /* Card container */
+    .container {
+        background: rgba(255, 255, 255, 0.2);
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(10px);
+        max-width: 400px;
+        width: 100%;
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .container:hover {
+        transform: scale(1.02);
+    }
+
+    /* Heading */
+    h1 {
+        color: #fff;
+        font-size: 24px;
+        margin-bottom: 15px;
+    }
+
+    /* Label styling */
+    label {
+        font-size: 16px;
+        color: #fff;
+    }
+
+    /* Input field */
+    input {
+        width: 100%;
+        padding: 10px;
+        margin-top: 8px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        outline: none;
+        text-align: center;
+        box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Button styling */
+    button {
+        background: #ffcc00;
+        color: #333;
+        border: none;
+        padding: 12px 20px;
+        font-size: 16px;
+        border-radius: 8px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 15px;
+        transition: background 0.3s, transform 0.2s;
+        width: 100%;
+        box-shadow: 0 4px 10px rgba(255, 204, 0, 0.4);
+    }
+
+    button:hover {
+        background: #ffdd44;
+        transform: scale(1.05);
+    }
+
+    /* Status message */
+    #userInfo {
+        font-size: 16px;
+        font-weight: bold;
+        color: #fff;
+        margin-top: 15px;
+    }
+
+    /* Wrapper for center alignment */
+    .wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        width: 100%;
+    }
+</style>
+
 </head>
 <body>
+    <div class="container">
   <h1>Check KYC Status</h1>
 
   <label for="checkAddress">Enter Wallet Address:</label><br>
@@ -16,405 +112,59 @@
 
   <h3>User Info:</h3>
   <p id="userInfo"></p>
-
+</div>
   <script>
-    const contractAddress = '0x4b03A3b8c9886b875b671007Fb5238ea3Ef995ca';
-    const abi = 
-    [
-    {
-        "inputs": [],
-        "stateMutability": "nonpayable",
-        "type": "constructor"
-    },
-    {
+    const contractAddress = '0x4b03A3b8c9886b875b671007Fb5238ea3Ef995ca'; // Your contract address
+    const abi = [
+      {
         "inputs": [
-        {
-            "internalType": "address",
-            "name": "owner",
-            "type": "address"
-        }
-        ],
-        "name": "OwnableInvalidOwner",
-        "type": "error"
-    },
-    {
-        "inputs": [
-        {
-            "internalType": "address",
-            "name": "account",
-            "type": "address"
-        }
-        ],
-        "name": "OwnableUnauthorizedAccount",
-        "type": "error"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-        {
-            "indexed": true,
-            "internalType": "address",
-            "name": "user",
-            "type": "address"
-        }
-        ],
-        "name": "KYCApproved",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-        {
-            "indexed": true,
-            "internalType": "address",
-            "name": "user",
-            "type": "address"
-        },
-        {
-            "indexed": false,
-            "internalType": "string",
-            "name": "reason",
-            "type": "string"
-        }
-        ],
-        "name": "KYCRejected",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-        {
-            "indexed": true,
-            "internalType": "address",
-            "name": "user",
-            "type": "address"
-        },
-        {
-            "indexed": false,
-            "internalType": "string",
-            "name": "userId",
-            "type": "string"
-        }
-        ],
-        "name": "KYCRequested",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-        {
-            "indexed": true,
-            "internalType": "address",
-            "name": "user",
-            "type": "address"
-        }
-        ],
-        "name": "KYCRevoked",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-        {
-            "indexed": true,
-            "internalType": "address",
-            "name": "previousOwner",
-            "type": "address"
-        },
-        {
-            "indexed": true,
-            "internalType": "address",
-            "name": "newOwner",
-            "type": "address"
-        }
-        ],
-        "name": "OwnershipTransferred",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-        {
-            "indexed": true,
-            "internalType": "address",
-            "name": "verifier",
-            "type": "address"
-        }
-        ],
-        "name": "VerifierAdded",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-        {
-            "indexed": true,
-            "internalType": "address",
-            "name": "verifier",
-            "type": "address"
-        }
-        ],
-        "name": "VerifierRemoved",
-        "type": "event"
-    },
-    {
-        "inputs": [
-        {
-            "internalType": "address",
-            "name": "_verifier",
-            "type": "address"
-        }
-        ],
-        "name": "addVerifier",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-        {
+          {
             "internalType": "address",
             "name": "_user",
             "type": "address"
-        }
-        ],
-        "name": "approveKYC",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-        {
-            "internalType": "address",
-            "name": "_user",
-            "type": "address"
-        }
+          }
         ],
         "name": "getUserInfo",
         "outputs": [
-        {
+          {
             "internalType": "string",
             "name": "",
             "type": "string"
-        },
-        {
+          },
+          {
             "internalType": "uint8",
             "name": "",
             "type": "uint8"
-        },
-        {
+          },
+          {
             "internalType": "enum KYCRegistry.KYCStatus",
             "name": "",
             "type": "uint8"
-        }
+          }
         ],
         "stateMutability": "view",
         "type": "function"
-    },
-    {
+      },
+      {
         "inputs": [
-        {
+          {
             "internalType": "address",
             "name": "_user",
             "type": "address"
-        }
+          }
         ],
         "name": "isUserVerified",
         "outputs": [
-        {
+          {
             "internalType": "bool",
             "name": "",
             "type": "bool"
-        }
+          }
         ],
         "stateMutability": "view",
         "type": "function"
-    },
-    {
-        "inputs": [
-        {
-            "internalType": "address",
-            "name": "_verifier",
-            "type": "address"
-        }
-        ],
-        "name": "isVerifier",
-        "outputs": [
-        {
-            "internalType": "bool",
-            "name": "",
-            "type": "bool"
-        }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-        {
-            "internalType": "address",
-            "name": "",
-            "type": "address"
-        }
-        ],
-        "name": "kycVerifiers",
-        "outputs": [
-        {
-            "internalType": "bool",
-            "name": "",
-            "type": "bool"
-        }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "owner",
-        "outputs": [
-        {
-            "internalType": "address",
-            "name": "",
-            "type": "address"
-        }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-        {
-            "internalType": "address",
-            "name": "_user",
-            "type": "address"
-        },
-        {
-            "internalType": "string",
-            "name": "_reason",
-            "type": "string"
-        }
-        ],
-        "name": "rejectKYC",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-        {
-            "internalType": "address",
-            "name": "_verifier",
-            "type": "address"
-        }
-        ],
-        "name": "removeVerifier",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "renounceOwnership",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-        {
-            "internalType": "string",
-            "name": "_name",
-            "type": "string"
-        },
-        {
-            "internalType": "uint8",
-            "name": "_age",
-            "type": "uint8"
-        },
-        {
-            "internalType": "string",
-            "name": "_userId",
-            "type": "string"
-        }
-        ],
-        "name": "requestKYC",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-        {
-            "internalType": "address",
-            "name": "_user",
-            "type": "address"
-        }
-        ],
-        "name": "revokeKYC",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-        {
-            "internalType": "address",
-            "name": "newOwner",
-            "type": "address"
-        }
-        ],
-        "name": "transferOwnership",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-        {
-            "internalType": "address",
-            "name": "",
-            "type": "address"
-        }
-        ],
-        "name": "users",
-        "outputs": [
-        {
-            "internalType": "string",
-            "name": "name",
-            "type": "string"
-        },
-        {
-            "internalType": "uint8",
-            "name": "age",
-            "type": "uint8"
-        },
-        {
-            "internalType": "string",
-            "name": "userId",
-            "type": "string"
-        },
-        {
-            "internalType": "address",
-            "name": "wallet",
-            "type": "address"
-        },
-        {
-            "internalType": "enum KYCRegistry.KYCStatus",
-            "name": "status",
-            "type": "uint8"
-        },
-        {
-            "internalType": "uint256",
-            "name": "timestamp",
-            "type": "uint256"
-        }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    }
-]
-;
+      }
+    ];
 
     window.onload = async function () {
       if (window.ethereum) {
@@ -424,7 +174,20 @@
 
         document.getElementById('checkStatus').onclick = async () => {
           const address = document.getElementById('checkAddress').value;
+          if (!web3.utils.isAddress(address)) {
+            alert('Please enter a valid Ethereum address!');
+            return;
+          }
+
           try {
+            // Check if the user has requested KYC or is verified
+            const userVerified = await contract.methods.isUserVerified(address).call();
+            if (!userVerified) {
+              document.getElementById('userInfo').innerHTML = `No KYC request found for address: ${address}`;
+              return;
+            }
+
+            // Fetch user information if they have requested KYC
             const userInfo = await contract.methods.getUserInfo(address).call();
             const status = ["Unverified", "Pending", "Verified", "Rejected"];
             document.getElementById('userInfo').innerHTML = `
@@ -433,7 +196,8 @@
               <b>KYC Status:</b> ${status[userInfo[2]]}
             `;
           } catch (error) {
-            alert('Error fetching KYC status!');
+            console.error(error);
+            alert('Error fetching KYC status! The user may not have requested KYC or an issue occurred.');
           }
         };
       } else {
